@@ -12,6 +12,7 @@ def affiliation_to_groups(list_sorted,list_of_union_words,radius):
         compression_value=original_value-master+num_groupe
         for position in range(1,list_positions_of_value.__len__()):
             list_of_union_words[list_positions_of_value[position]]=compression_value
+    print("finish affiliation_to_groups")
     return list_of_masters
 
 def union_words(list_of_all_the_words):
@@ -20,6 +21,7 @@ def union_words(list_of_all_the_words):
     return [list_of_all_the_words[i]+list_of_all_the_words[i+1]*power_8+list_of_all_the_words[i+2]*power_16 for i in range(0,list_of_all_the_words.__len__(),3)]\
 
 def find_optimal_radiuse(data,length_word):
+    print("find_optimal_radiuse")
     relevant_values=[i[0] for i in data]
     radius=2**(length_word/2)
     index=0
@@ -38,4 +40,5 @@ def find_optimal_radiuse(data,length_word):
             if case<-1:
                 radius=radius*1.5
             else:
+                print("finish find_optimal_radiuse")
                 return int(radius)+1
