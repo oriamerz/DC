@@ -1,7 +1,7 @@
-from math import log2
+
 from sorts import *
 from  data_sourse import save_as_image, get_pixels
-from imag_compression import union_words, affiliation_to_groups,find_optimal_radiuse
+from image_compression import union_words, affiliation_to_groups,find_optimal_radiuse
 
 
 def main():

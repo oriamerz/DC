@@ -1,5 +1,6 @@
 
 def affiliation_to_groups(list_sorted,list_of_union_words,radius):
+    print("affiliation_to_groups")
     master=list_sorted[0][0]
     num_groupe=radius+1
     list_of_masters=[master]
