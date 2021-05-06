@@ -1,6 +1,6 @@
-from math import log2
+from math import log2,sqrt
 from PIL import Image
-from math import sqrt
+
 
 
 def get_pixels(name):
@@ -14,9 +14,6 @@ def get_pixels(name):
         result.append(i[2])
     print("finish get_pixels")
     return result
-
-
-
 
 def save_as_image(numbers=[], file_name='pixel_map_test.png',max_input_num_len=2**24):
     print("save_as_image")
@@ -33,7 +30,7 @@ def save_as_image(numbers=[], file_name='pixel_map_test.png',max_input_num_len=2
         im= Image.new("RGB", (size, size+1), "#000000")
         for i in range(size):
             for j in range(size+1):
-                im.putpixel((i, j),(next(itr), next(itr), next(itr)) )
+                im.putpixel((i, j),(next(itr), next(itr), next(itr)))
 
         while (next(itr)):
             pass
@@ -67,7 +64,7 @@ def divide_the_numbers_into_fixed_patterns(numbers1,output_num_len,max_input_num
         print("finish divide_the_numbers_into_fixed_patterns")
         return result
 
-def divide_the_numbers_into_fixed_patterns_for_bigest_numbers(numbers1,output_num_len,max_input_num_len): #work, but if condition: max_present_len>=desired_len
+def divide_the_numbers_into_fixed_patterns_for_bigest_numbers(numbers1,output_num_len,max_input_num_len): #Work, but if condition: max_present_len>=desired_len
     result=[]
     dev=2**(-output_num_len)
     num=0
