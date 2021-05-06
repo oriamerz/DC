@@ -1,59 +1,85 @@
 from math import log2
-
 from PIL import Image
-def open_image(fileName):
-    im = Image.open(fileName)
-    pix = im.load()
-    num = []
-    for i in range(im.size[0]):
-        for j in range(im.size[1]):
-            p=pix[i,j]
-            num.append(p[0])
-            num.append(p[1])
-            num.append(p[2])
-    return num
+from math import sqrt
 
-def read_data(namefile):
-    with open(namefile+'.bin', 'r') as f:
-       return f.read()
 
-def save_data_compression(data, fileName, length_word):
-    list_pixes=[]
-    colors=1
-    for i in range(0,data.__len__()-1):
-        power = length_word+int(log2(colors)+1) - 8
-        colors = data[i]
-        while(power>8):
-            color=int(colors/(2**power))
-            list_pixes.append(color)
-            colors=colors%(2**power)
-            power=power - 8
-        data[i+1]+=colors*(2**length_word)
-        itr=list_pixes.__iter__()
-        im=Image
-        im = Image.open(fileName)
-        pix = im.load()
-        for i in range(im.size[0]):
-            for j in range(im.size[1]):
-                try:
-                    pix[i, j] = (list_pixes[itr.__next__()], list_pixes[itr.__next__()], list_pixes[itr.__next__()])
-                except:
-                    print("error")
-
-        im.save("result.PNG")
-    print(list_pixes)
-#str(string).replace(',','').replace('[','').replace(']','')
-
-def open_image2(fileName):
-    im = Image.open(fileName)
-    pix = im.load()
-    length=im.size[0]
-    width=im.size[1]
-    for i in range(im.size[0]):
-        for j in range(im.size[1]):
-            pix[i,j]=(255,0,255)
-    im.save("result.PNG")
+def get_pixels(name):
+    print("get_pixels")
+    im = Image.open(name)
+    pixel_values = list(im.getdata())
+    result = []
+    for i in pixel_values:
+        result.append(i[0])
+        result.append(i[1])
+        result.append(i[2])
+    print("finish get_pixels")
+    return result
 
 
 
-open_image2("test.PNG")
+
+def save_as_image(numbers=[], file_name='pixel_map_test.png',max_input_num_len=2**24):
+    print("save_as_image")
+    max_input_num_len=log2(max_input_num_len)
+    if max_input_num_len%1>0:
+        max_input_num_len=int(max_input_num_len)+1
+    else:
+        max_input_num_len = int(max_input_num_len)
+
+    numbers_divid=divide_the_numbers_into_fixed_patterns(numbers, 8, max_input_num_len)
+    try:
+        size=int(sqrt(numbers_divid.__len__()/3))
+        itr= iter(numbers_divid)
+        im= Image.new("RGB", (size, size+1), "#000000")
+        for i in range(size):
+            for j in range(size+1):
+                im.putpixel((i, j),(next(itr), next(itr), next(itr)) )
+
+        while (next(itr)):
+            pass
+
+    except StopIteration:
+        im.show()
+        im.save(file_name)
+        print("finish save_as_image")
+
+
+def divide_the_numbers_into_fixed_patterns(numbers1,output_num_len,max_input_num_len):
+     try:
+        print("divide_the_numbers_into_fixed_patterns")
+        itr = iter(numbers1)
+        result=[]
+        dev=2**(-output_num_len)
+        num=0
+        while (True):
+            i=1
+            num= itr.__next__()+num*(2**max_input_num_len)
+            while i*max_input_num_len+log2(dev)<0:
+                i+=1
+                num = itr.__next__() + num * (2 ** max_input_num_len)
+            dev = 2 ** (i*max_input_num_len + log2(dev))#= i*max_present_len_len-desired_len+desired+log(dev)
+            while dev>=1:
+                result.append(int(num/dev))
+                num=num%dev
+                dev=dev/(2**output_num_len)
+     except StopIteration:
+        result.append(num)  # The last num enters
+        print("finish divide_the_numbers_into_fixed_patterns")
+        return result
+
+def divide_the_numbers_into_fixed_patterns_for_bigest_numbers(numbers1,output_num_len,max_input_num_len): #work, but if condition: max_present_len>=desired_len
+    result=[]
+    dev=2**(-output_num_len)
+    num=0
+    for j in numbers1:
+        num= j+num*(2**max_input_num_len)
+        dev = 2**(max_input_num_len+log2(dev))#= log(dev)-desired_len+max_present_len-desired_len
+        while dev>=1:
+            result.append(int(num/dev))
+            num=num%dev
+            dev=dev/(2**output_num_len)
+    result.append(num) #The last num enters without change
+    return result
+
+
+#divide_the_numbers_into_fixed_patterns([4,9,4,15],8,4)
