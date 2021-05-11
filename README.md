@@ -1,4 +1,5 @@
-#Data compression
+__Data compression__
+
 ##Data compression of an image without data loss.
 
 #General explanation of the algorithm:
