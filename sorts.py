@@ -1,5 +1,6 @@
 from math import log2
 def sort_by_bucket_list(data,length_word):
+    """ sorting the bit-words by bucket-sorting"""
     print("sort_by_bucket_list")
     t= 2**length_word
     bucket_list = [None for i in range (t)]
@@ -20,23 +21,28 @@ def sort_by_bucket_list(data,length_word):
 
 
 def standard_sort(data):
+    """ sorting the bit-words according to python standard-sorting"""
     print("standard_sort")
-    data=[(i, data[i]) for i in range(data.__len__())]
+    data=[(position, data[position]) for position in range(data.__len__())]
     data.sort(key=lambda a:a[1])
     sorted_list=[[data[0][1],data[0][0]]]
     index_sorted_list=0
-    for i in range(1,data.__len__()):
+    for i in range(1,data.__len__()): # put in order [[color1, position1, position2...],[color2, position1, position2...],...]
         if sorted_list[index_sorted_list][0] == data[i][1]:
             sorted_list[index_sorted_list].append(data[i][0])
         else:
             index_sorted_list+=1
             sorted_list.append([data[i][1],data[i][0]])
-            #sorted_list[index_sorted_list]=[data[i][1],data[i][0]]
     print("finish standard_sort")
     return sorted_list
 
-def list_of_the_words_in_file_sorted_according_to_lenngh(data,length_word):
-    if (data.__len__()*log2(data.__len__()) > 2**length_word):
+def list_of_the_words_in_file_sorted_according_to_length(data,length_word):
+    """sorting the pixels accotrding to the color- value
+
+        :param data: Input data, length_word: length of word in list.
+        :returns: list [[color1, position1, position2...],[color1, position1, position2...]...].
+    """
+    if (data.__len__()*log2(data.__len__()) > 2**length_word): #checking if bucket sorting is faster then standard sorting
         return (sort_by_bucket_list(data,length_word))
     else:
         return (standard_sort(data))
