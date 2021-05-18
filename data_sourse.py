@@ -1,11 +1,21 @@
 from math import log2,sqrt
 from PIL import Image
 
+def get_input_list(filename):
+    """returning a list of the pixels in a 24-bit numbers"""
+    return Union_the_shades_of_pixels (get_pixels(filename))
 
 
-def get_pixels(name):
+def Union_the_shades_of_pixels(list_of_all_the_words):
+    """converting the RGB pixels to a 24-bit single number"""
+    power_8=2**8
+    power_16=2**16
+    return [list_of_all_the_words[i]+list_of_all_the_words[i+1]*power_8+list_of_all_the_words[i+2]*power_16 for i in range(0,list_of_all_the_words.__len__(),3)]\
+
+def get_pixels(filename):
+    """returning a list of all pixels in 8-bit format"""
     print("get_pixels")
-    im = Image.open(name)
+    im = Image.open(filename)
     pixel_values = list(im.getdata())
     result = []
     for i in pixel_values:
@@ -22,19 +32,16 @@ def save_as_image(numbers=[], file_name='pixel_map_test.png',max_input_num_len=2
         max_input_num_len=int(max_input_num_len)+1
     else:
         max_input_num_len = int(max_input_num_len)
-
-    numbers_divid=divide_the_numbers_into_fixed_patterns(numbers, 8, max_input_num_len)
+    numbers_divided=divide_the_numbers_into_fixed_patterns(numbers, 8, max_input_num_len)
     try:
-        size=int(sqrt(numbers_divid.__len__()/3))
-        itr= iter(numbers_divid)
+        size=int(sqrt(numbers_divided.__len__()/3))
+        itr= iter(numbers_divided)
         im= Image.new("RGB", (size, size+1), "#000000")
         for i in range(size):
             for j in range(size+1):
                 im.putpixel((i, j),(next(itr), next(itr), next(itr)))
-
         while (next(itr)):
             pass
-
     except StopIteration:
         im.show()
         im.save(file_name)
@@ -64,19 +71,7 @@ def divide_the_numbers_into_fixed_patterns(numbers1,output_num_len,max_input_num
         print("finish divide_the_numbers_into_fixed_patterns")
         return result
 
-def divide_the_numbers_into_fixed_patterns_for_bigest_numbers(numbers1,output_num_len,max_input_num_len): #Work, but if condition: max_present_len>=desired_len
-    result=[]
-    dev=2**(-output_num_len)
-    num=0
-    for j in numbers1:
-        num= j+num*(2**max_input_num_len)
-        dev = 2**(max_input_num_len+log2(dev))#= log(dev)-desired_len+max_present_len-desired_len
-        while dev>=1:
-            result.append(int(num/dev))
-            num=num%dev
-            dev=dev/(2**output_num_len)
-    result.append(num) #The last num enters without change
-    return result
+
 
 
 #divide_the_numbers_into_fixed_patterns([4,9,4,15],8,4)

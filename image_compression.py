@@ -1,10 +1,11 @@
 
-def affiliation_to_groups(list_sorted,list_of_union_words,radius):
+def affiliation_to_groups(list_sorted_by_color,list_of_union_words,length_word):
     print("affiliation_to_groups")
-    master=list_sorted[0][0]
+    radius=find_optimal_radiuse(list_sorted_by_color,length_word)
+    master=list_sorted_by_color[0][0]
     num_groupe=radius+1
     list_of_masters=[master]
-    for list_positions_of_value in list_sorted:
+    for list_positions_of_value in list_sorted_by_color:
         original_value=list_positions_of_value[0]
         if original_value > master + radius:
             master = original_value
@@ -14,12 +15,8 @@ def affiliation_to_groups(list_sorted,list_of_union_words,radius):
         for position in range(1,list_positions_of_value.__len__()):
             list_of_union_words[list_positions_of_value[position]]=compression_value
     print("finish affiliation_to_groups")
-    return list_of_masters
+    return list_of_masters, list_of_union_words, radius
 
-def union_words(list_of_all_the_words):
-    power_8=2**8
-    power_16=2**16
-    return [list_of_all_the_words[i]+list_of_all_the_words[i+1]*power_8+list_of_all_the_words[i+2]*power_16 for i in range(0,list_of_all_the_words.__len__(),3)]\
 
 def find_optimal_radiuse(data,length_word):
     print("find_optimal_radiuse")
