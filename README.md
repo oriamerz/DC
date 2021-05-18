@@ -6,5 +6,3 @@ The software searches for common subwords for the file words and saves them in a
 Then the software changes each common subword in its index number in the dictionary.
 
 
-Pseudo code of the software:
-1. 
