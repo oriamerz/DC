@@ -26,8 +26,8 @@ def main_image_compression():
     save_as_image(numbers=short_list_of_union_the_shades_of_pixels,
                   file_name=filename + "_pixel_map_of_short_words.png",
                   max_input_num_len=2 * radius)
-    save_as_image(numbers=list_of_keywords, file_name=filename + "_pixel_map_of_keyword.png",
-                  max_input_num_len=length_word)
+    save_as_image(numbers=list_of_keywords, file_name=filename + "_pixel_map_of_keywords.png",
+                  max_input_num_len=2**length_word)
 
 
 if __name__ == '__main__':

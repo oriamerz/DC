@@ -45,11 +45,6 @@ def save_as_image(numbers=[], file_name='pixel_map_test.png', max_input_num_len=
             for j in range(size):
                 im.putpixel((i, j), (int(next(itr)), int(next(itr)), int(next(itr))))
 
-        if file_name=="test_pixel_map_of_keyword.png":
-            print(numbers_divided)
-        while True:
-            print("next(itr)")
-
     except StopIteration:
         im.save(file_name)
         print("finish save_as_image")
