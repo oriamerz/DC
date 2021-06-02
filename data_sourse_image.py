@@ -1,4 +1,4 @@
-from math import log2, sqrt
+from math import log2, sqrt, ceil
 from PIL import Image
 
 
@@ -17,7 +17,7 @@ def Union_the_shades_of_pixels(list_of_all_the_words):
 
 def get_pixels(filename):
     """returning a list of all pixels in 8-bit format"""
-    print("get_pixels")
+    #print("get_pixels")
     im = Image.open(filename)
     pixel_values = list(im.getdata())
     result = []
@@ -25,52 +25,50 @@ def get_pixels(filename):
         result.append(i[0])
         result.append(i[1])
         result.append(i[2])
-    print("finish get_pixels")
+    #print("finish get_pixels")
     return result
 
 
-def save_as_image(numbers=[], file_name='pixel_map_test.png', max_input_num_len=2 ** 24):
-    print("save_as_image")
-    max_input_num_len = log2(max_input_num_len)
-    if max_input_num_len % 1 > 0:
-        max_input_num_len = int(max_input_num_len) + 1
-    else:
-        max_input_num_len = int(max_input_num_len)
-    numbers_divided = divide_the_numbers_into_fixed_patterns(numbers, 8, max_input_num_len)
+def save_as_image(numbers=[], file_name='pixel_map_test.png', max_input_num=2 ** 24):
+    #print("save_as_image")
+    matched_numbers = match_the_numbers_within_fixed_length_patterns(numbers, 8, int(ceil(log2(max_input_num))))
+    size = int(ceil(sqrt((matched_numbers.__len__()) / 3)))
+    save_as_image1(matched_numbers, file_name, (size,size))
+
+def save_as_image1(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322)):
     try:
-        size = int(sqrt((numbers_divided.__len__()+3) / 3)+1)
-        itr = iter(numbers_divided)
-        im = Image.new("RGB", (size, size), "#000000")
-        for i in range(size):
-            for j in range(size):
+        itr = iter(numbers)
+        im = Image.new("RGB", (ImageSize[0], ImageSize[1]), "#000000")
+        for i in range(ImageSize[0]):
+            for j in range(ImageSize[1]):
                 im.putpixel((i, j), (int(next(itr)), int(next(itr)), int(next(itr))))
 
     except StopIteration:
         im.save(file_name)
-        print("finish save_as_image")
+        #print("finish save_as_image")
 
 
-def divide_the_numbers_into_fixed_patterns(numbers1, output_num_len, max_input_num_len):
+def match_the_numbers_within_fixed_length_patterns(numbers, fixed_patterns_len, max_input_num_len):
     try:
-        print("divide_the_numbers_into_fixed_patterns")
-        itr = iter(numbers1)
+        #print("divide_the_numbers_into_fixed_patterns")
+        itr = iter(numbers)
         result = []
-        dev = 2 ** (-output_num_len)
         num = 0
-        while (True):
+        while (True): #Run until there is the StopIteration
             i = 1
             num = itr.__next__() + num * (2 ** max_input_num_len)
-            while i * max_input_num_len + log2(dev) < 0:
+            while i < fixed_patterns_len/max_input_num_len:
                 i += 1
                 num = itr.__next__() + num * (2 ** max_input_num_len)
-            dev = 2 ** (i * max_input_num_len + log2(dev))  # = i*max_present_len_len-desired_len+desired+log(dev)
+            dev = 2 ** (i * max_input_num_len - fixed_patterns_len)  # = i*max_present_len_len-desired_len+desired+log(dev)
             while dev >= 1:
                 result.append(int(num / dev))
                 num = num % dev
-                dev = dev / (2 ** output_num_len)
+                dev = dev / (2 ** fixed_patterns_len)
     except StopIteration:
         result.append(num)  # The last num enters
-        print("finish divide_the_numbers_into_fixed_patterns")
+        #print("finish divide_the_numbers_into_fixed_patterns")
         return result
 
-# divide_the_numbers_into_fixed_patterns([4,9,4,15],8,4)
+
+
