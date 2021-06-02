@@ -3,7 +3,7 @@ from math import log2
 
 def sort_by_bucket_list(data, length_word):
     """ sorting the bit-words by bucket-sorting"""
-    print("sort_by_bucket_list")
+    #print("sort_by_bucket_list")
     t = 2 ** length_word
     bucket_list = [None for i in range(t)]
     index = -1
@@ -18,13 +18,13 @@ def sort_by_bucket_list(data, length_word):
     for i in bucket_list:
         if i != None:
             sorted_list.append(i)
-    print("finish sort_by_bucket_list")
+    #print("finish sort_by_bucket_list")
     return sorted_list
 
 
 def standard_sort(data):
     """ sorting the bit-words according to python standard-sorting"""
-    print("standard_sort")
+    #print("standard_sort")
     data = [(position, data[position]) for position in range(data.__len__())]
     data.sort(key=lambda a: a[1])
     sorted_list = [[data[0][1], data[0][0]]]
@@ -36,7 +36,7 @@ def standard_sort(data):
         else:
             index_sorted_list += 1
             sorted_list.append([data[i][1], data[i][0]])
-    print("finish standard_sort")
+    #print("finish standard_sort")
     return sorted_list
 
 

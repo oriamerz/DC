@@ -1,4 +1,4 @@
-from math import log2, sqrt
+from math import log2, sqrt, ceil
 from PIL import Image
 
 
@@ -17,7 +17,7 @@ def Union_the_shades_of_pixels(list_of_all_the_words):
 
 def get_pixels(filename):
     """returning a list of all pixels in 8-bit format"""
-    print("get_pixels")
+    #print("get_pixels")
     im = Image.open(filename)
     pixel_values = list(im.getdata())
     result = []
@@ -25,20 +25,16 @@ def get_pixels(filename):
         result.append(i[0])
         result.append(i[1])
         result.append(i[2])
-    print("finish get_pixels")
+    #print("finish get_pixels")
     return result
 
 
-def save_as_image(numbers=[], file_name='pixel_map_test.png', max_input_num_len=2 ** 24):
-    print("save_as_image")
-    max_input_num_len = log2(max_input_num_len)
-    if max_input_num_len % 1 > 0:
-        max_input_num_len = int(max_input_num_len) + 1
-    else:
-        max_input_num_len = int(max_input_num_len)
+def save_as_image(numbers=[], file_name='pixel_map_test.png', max_input_num=2 ** 24):
+    #print("save_as_image")
+    max_input_num_len = int(ceil(log2(max_input_num)))
     numbers_divided = divide_the_numbers_into_fixed_patterns(numbers, 8, max_input_num_len)
     try:
-        size = int(sqrt((numbers_divided.__len__()+3) / 3)+1)
+        size = int(ceil(sqrt((numbers_divided.__len__())/ 3)))
         itr = iter(numbers_divided)
         im = Image.new("RGB", (size, size), "#000000")
         for i in range(size):
@@ -47,13 +43,13 @@ def save_as_image(numbers=[], file_name='pixel_map_test.png', max_input_num_len=
 
     except StopIteration:
         im.save(file_name)
-        print("finish save_as_image")
+        #print("finish save_as_image")
 
 
-def divide_the_numbers_into_fixed_patterns(numbers1, output_num_len, max_input_num_len):
+def divide_the_numbers_into_fixed_patterns(numbers, output_num_len, max_input_num_len):
     try:
-        print("divide_the_numbers_into_fixed_patterns")
-        itr = iter(numbers1)
+        #print("divide_the_numbers_into_fixed_patterns")
+        itr = iter(numbers)
         result = []
         dev = 2 ** (-output_num_len)
         num = 0
@@ -70,7 +66,7 @@ def divide_the_numbers_into_fixed_patterns(numbers1, output_num_len, max_input_n
                 dev = dev / (2 ** output_num_len)
     except StopIteration:
         result.append(num)  # The last num enters
-        print("finish divide_the_numbers_into_fixed_patterns")
+        #print("finish divide_the_numbers_into_fixed_patterns")
         return result
 
 # divide_the_numbers_into_fixed_patterns([4,9,4,15],8,4)

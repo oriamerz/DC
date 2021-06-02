@@ -1,12 +1,7 @@
+from data_sourse_image import get_pixels
+
+def extract(filename="test_pixel_map_of_short_words", sourceImageSize = (503,322), radius=24):
+    values_less_then_256 = get_pixels(filename)
 
 
 
-class Solution:
-    def combinationSum(self, candidates: list[int], target: int):
-        result=[]
-        y=0
-        for i in candidates:
-            x=target/i
-
-            if int(x) == x:
-                result.append([i for j in range(x)])

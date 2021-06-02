@@ -1,4 +1,4 @@
-from math import log2
+from math import log2, ceil
 
 
 def affiliation_to_groups(list_of_data, total_words, length_word):
@@ -8,35 +8,29 @@ def affiliation_to_groups(list_of_data, total_words, length_word):
         :returns: list_of_keyword: keywords, list_of_shortened_words: All the words , radius: The maximum distance between the word to the keyword.
     """
     list_of_shortened_words = [None for i in range(total_words)]
-    print("affiliation_to_groups")
+    #print("affiliation_to_groups")
     radius = find_optimal_radius(list_of_data,
                                  length_word)  # radius: The maximum distance between the word to the keyword
     keyword = list_of_data[0][0]
+    radius = 2 ** int(ceil(log2(radius)))
 
-    log2radius = log2(radius)
-    if log2radius % 1 > 0:
-        log2radius = int(log2radius) + 1
-    else:
-        log2radius = int(log2radius)
-    radius = 2 ** log2radius
-
-    keyword_group_number = radius  # Must be greater than the radius for indentify what the group name of each word is.
+    keyword_group_number = 0
     list_of_keywords = [keyword]
     for list_positions_of_value in list_of_data:
         original_value = list_positions_of_value[0]
         if original_value > keyword + radius:  # Move on to the next keyword.
             keyword = original_value
-            keyword_group_number += radius
+            keyword_group_number += radius # Must be greater than the radius for indentify what the group name of each word is.
             list_of_keywords.append(keyword)
         compression_value = original_value - keyword + keyword_group_number
         for position in range(1, list_positions_of_value.__len__()):
             list_of_shortened_words[list_positions_of_value[position]] = compression_value
-    print("finish affiliation_to_groups")
+    #print("finish affiliation_to_groups")
     return list_of_keywords, list_of_shortened_words, radius
 
 
 def find_optimal_radius(data, length_word):
-    print("find_optimal_radius")
+    #print("find_optimal_radius")
     values = [i[0] for i in data]
     radius = 2 ** (length_word / 2)
     x = 2 ** (length_word / 2)
@@ -50,8 +44,8 @@ def find_optimal_radius(data, length_word):
         case = log2(radius) - log2(counter_of_companies)
         x = x / 2
         if int(case) == 0 or x < 1:
-            print("finish find_optimal_radius")
-            return int(radius) + 1
+            #print("finish find_optimal_radius")
+            return 2 ** int(ceil(log2(radius)))
         if case >= 1:
             radius = radius - x
         else:
