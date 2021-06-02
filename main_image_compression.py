@@ -8,7 +8,7 @@ def main_image_compression():
     Data compression of an image without data loss
     """
     filename = "test"  # To simulation.
-    length_word = 24  # Lenght of RGB pixel
+    length_word = 24  # Length of RGB pixel
 
     # Gets the data from memory in format list of numbers, each number is a different color.
     list_of_pixels = get_input_list(r"" + filename + ".png")
