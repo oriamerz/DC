@@ -14,6 +14,8 @@ def Union_the_shades_of_pixels(list_of_all_the_words):
     return [list_of_all_the_words[i] + list_of_all_the_words[i + 1] * power_8 + list_of_all_the_words[i + 2] * power_16
             for i in range(0, list_of_all_the_words.__len__(), 3)]
 
+def get_image_size(filename):
+    return (Image.open(filename)).size
 
 def get_pixels(filename):
     """returning a list of all pixels in 8-bit format"""
@@ -29,13 +31,13 @@ def get_pixels(filename):
     return result
 
 
-def save_as_image(numbers=[], file_name='pixel_map_test.png', max_input_num=2 ** 24):
+def save_as_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322), max_input_num_len= 24):
     #print("save_as_image")
-    matched_numbers = match_the_numbers_within_fixed_length_patterns(numbers, 8, int(ceil(log2(max_input_num))))
-    size = int(ceil(sqrt((matched_numbers.__len__()) / 3)))
-    save_as_image1(matched_numbers, file_name, (size,size))
+    matched_numbers = match_the_numbers_within_fixed_length_patterns(numbers, 8, 2*max_input_num_len)
+    #size = int(ceil(sqrt((matched_numbers.__len__()) / 3)))
+    save_image(matched_numbers, file_name, ImageSize)
 
-def save_as_image1(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322)):
+def save_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322)):
     try:
         itr = iter(numbers)
         im = Image.new("RGB", (ImageSize[0], ImageSize[1]), "#000000")
