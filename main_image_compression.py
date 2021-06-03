@@ -1,4 +1,4 @@
-from data_sourse_image import save_as_image, get_input_list
+from data_sourse_image import save_as_image, get_input_list, ceil, log2, get_image_size,sqrt
 from sorts import list_of_the_words_in_file_sorted_according_to_length
 from words_compression import affiliation_to_groups
 
@@ -12,6 +12,7 @@ def main_image_compression():
 
     # Gets the data from memory in format list of numbers, each number is a different color.
     list_of_pixels = get_input_list(r"" + filename + ".png")
+    image_size=get_image_size(r"" + filename + ".png")
 
     # Returns a list of relevant colors and in which pixels were consumed.
     list_sorted_by_color = list_of_the_words_in_file_sorted_according_to_length(list_of_pixels,
@@ -24,11 +25,13 @@ def main_image_compression():
 
 
     # Save as "png" format to reduce image size
+    radius_len=int(ceil(log2(radius)))
+    image_size=(int(ceil(image_size[0]/sqrt(length_word/(2*radius_len)))),int(ceil(image_size[1]/sqrt(length_word/(2*radius_len)))))
     save_as_image(numbers=list_of_shortened_words,
-                  file_name=filename + "_pixel_map_of_short_words.png",
-                  max_input_num= radius*radius)
+                  file_name=filename + "_pixel_map_of_short_words.png", ImageSize=image_size,
+                  max_input_num_len= radius_len)
     save_as_image(numbers=list_of_keywords, file_name=filename + "_pixel_map_of_keywords.png",
-                  max_input_num=2**length_word)
+                  max_input_num_len=length_word)
 
 
 if __name__ == '__main__':
