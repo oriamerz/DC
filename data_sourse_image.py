@@ -41,14 +41,18 @@ def save_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322))
     try:
         itra = iter(numbers)
         im = Image.new("RGB", (ImageSize[0], ImageSize[1]), "#000000")
+        pixels = im.load()
         for i in range(ImageSize[0]):
             for j in range(ImageSize[1]):
                 color= (int(next(itra)), int(next(itra)), int(next(itra)))
-                im.putpixel((i, j),color)
+                pixels[i, j]=color
+
+        while (True):
+            print(next(itra))
 
     except StopIteration:
         im.save(file_name)
-        #print("finish save_as_image")
+        print("finish save_as_image")
 
 
 def match_the_numbers_within_fixed_length_patterns(numbers, fixed_patterns_len, max_input_num_len):

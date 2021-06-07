@@ -29,7 +29,7 @@ def main_image_compression():
     save_as_image(numbers=list_of_shortened_words,
                   file_name=filename + "_pixel_map_of_short_words.png", ImageSize=image_size,
                   max_input_num_len= group_number_len+radius_len)
-    image_size=(int(sqrt(list_of_keywords.__len__())),int(sqrt(list_of_keywords.__len__())))
+    image_size=(int(ceil(sqrt(list_of_keywords.__len__()))),int(ceil(sqrt(list_of_keywords.__len__()))))
     save_as_image(numbers=list_of_keywords, file_name=filename + "_pixel_map_of_keywords.png", ImageSize=image_size,
                   max_input_num_len=length_word)
 
