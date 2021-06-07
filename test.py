@@ -7,7 +7,8 @@ def extract(file_name="test_pixel_map_of_short_words.png", sourceImageSize = (50
     matched_colors=match_the_numbers_within_fixed_length_patterns(colors,24,8)
     matched_numbers=match_the_numbers_within_fixed_length_patterns(values_less_then_256,int(ceil(log2(radius))),8)
     pixels= list(map( lambda i: (matched_colors[int(i/radius)]+int(i%radius)) ,matched_numbers ))
-    save_as_image(pixels,"extract_"+file_name,sourceImageSize,24)
+    matched_pixels = match_the_numbers_within_fixed_length_patterns(pixels, 8, int(ceil(log2(radius))))
+    save_as_image(matched_pixels,"extract_"+file_name,sourceImageSize,24)
 
 
 

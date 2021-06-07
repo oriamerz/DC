@@ -19,18 +19,18 @@ def main_image_compression():
                                                                                 length_word)
 
     # Searches for common subwords within the color word and saves them in a dictionary. Then the software changes each common subword in its index number in the dictionary.
-    list_of_keywords, list_of_shortened_words, radius = affiliation_to_groups(list_sorted_by_color,
+    list_of_keywords, list_of_shortened_words, radius_len, group_number_len = affiliation_to_groups(list_sorted_by_color,
                                                                                                list_of_pixels.__len__(),
                                                                                                length_word)
 
 
     # Save as "png" format to reduce image size
-    radius_len=int(ceil(log2(radius)))
-    image_size=(int(ceil(image_size[0]/sqrt(length_word/(2*radius_len)))),int(ceil(image_size[1]/sqrt(length_word/(2*radius_len)))))
+    image_size=(int(ceil(image_size[0]/sqrt(length_word/(group_number_len+radius_len)))),int(ceil(image_size[1]/sqrt(length_word/(group_number_len+radius_len)))))
     save_as_image(numbers=list_of_shortened_words,
                   file_name=filename + "_pixel_map_of_short_words.png", ImageSize=image_size,
-                  max_input_num_len= radius_len)
-    save_as_image(numbers=list_of_keywords, file_name=filename + "_pixel_map_of_keywords.png",
+                  max_input_num_len= group_number_len+radius_len)
+    image_size=(int(ceil(sqrt(list_of_keywords.__len__()))),int(ceil(sqrt(list_of_keywords.__len__()))))
+    save_as_image(numbers=list_of_keywords, file_name=filename + "_pixel_map_of_keywords.png", ImageSize=image_size,
                   max_input_num_len=length_word)
 
 

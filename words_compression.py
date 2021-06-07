@@ -26,7 +26,7 @@ def affiliation_to_groups(list_of_data, total_words, length_word):
         for position in range(1, list_positions_of_value.__len__()):
             list_of_shortened_words[list_positions_of_value[position]] = compression_value
     #print("finish affiliation_to_groups")
-    return list_of_keywords, list_of_shortened_words, radius
+    return list_of_keywords, list_of_shortened_words, int(ceil(log2(radius))), int(ceil(log2(keyword_group_number/radius)))
 
 
 def find_optimal_radius(data, length_word):
