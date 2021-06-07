@@ -33,17 +33,18 @@ def get_pixels(filename):
 
 def save_as_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322), max_input_num_len= 24):
     #print("save_as_image")
-    matched_numbers = match_the_numbers_within_fixed_length_patterns(numbers, 8, 2*max_input_num_len)
+    matched_numbers = match_the_numbers_within_fixed_length_patterns(numbers, 8, max_input_num_len)
     #size = int(ceil(sqrt((matched_numbers.__len__()) / 3)))
     save_image(matched_numbers, file_name, ImageSize)
 
 def save_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322)):
     try:
-        itr = iter(numbers)
+        itra = iter(numbers)
         im = Image.new("RGB", (ImageSize[0], ImageSize[1]), "#000000")
         for i in range(ImageSize[0]):
             for j in range(ImageSize[1]):
-                im.putpixel((i, j), (int(next(itr)), int(next(itr)), int(next(itr))))
+                color= (int(next(itra)), int(next(itra)), int(next(itra)))
+                im.putpixel((i, j),color)
 
     except StopIteration:
         im.save(file_name)
@@ -52,24 +53,25 @@ def save_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322))
 
 def match_the_numbers_within_fixed_length_patterns(numbers, fixed_patterns_len, max_input_num_len):
     try:
-        #print("divide_the_numbers_into_fixed_patterns")
+        #print("match_the_numbers_within_fixed_length_patterns")
         itr = iter(numbers)
         result = []
         num = 0
+        dev=2**(-fixed_patterns_len)
         while (True): #Run until there is the StopIteration
             i = 1
             num = itr.__next__() + num * (2 ** max_input_num_len)
-            while i < fixed_patterns_len/max_input_num_len:
+            while i < fixed_patterns_len/(max_input_num_len+fixed_patterns_len+log2(fixed_patterns_len)):
                 i += 1
                 num = itr.__next__() + num * (2 ** max_input_num_len)
-            dev = 2 ** (i * max_input_num_len - fixed_patterns_len)  # = i*max_present_len_len-desired_len+desired+log(dev)
+            dev = dev * (2 ** (i * max_input_num_len))
             while dev >= 1:
                 result.append(int(num / dev))
                 num = num % dev
                 dev = dev / (2 ** fixed_patterns_len)
     except StopIteration:
         result.append(num)  # The last num enters
-        #print("finish divide_the_numbers_into_fixed_patterns")
+        #print("finish match_the_numbers_within_fixed_length_patterns")
         return result
 
 
