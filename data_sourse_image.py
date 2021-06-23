@@ -34,7 +34,6 @@ def get_pixels(filename):
 def save_as_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322), max_input_num_len= 24):
     #print("save_as_image")
     matched_numbers = match_the_numbers_within_fixed_length_patterns(numbers, 8, max_input_num_len)
-    #size = int(ceil(sqrt((matched_numbers.__len__()) / 3)))
     save_image(matched_numbers, file_name, ImageSize)
 
 def save_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322)):
@@ -42,10 +41,10 @@ def save_image(numbers=[], file_name='pixel_map_test.png',ImageSize = (503,322))
         itra = iter(numbers)
         im = Image.new("RGB", (ImageSize[0], ImageSize[1]), "#000000")
         pixels = im.load()
-        for i in range(ImageSize[0]):
-            for j in range(ImageSize[1]):
+        for i in range(ImageSize[1]):
+            for j in range(ImageSize[0]):
                 color= (int(next(itra)), int(next(itra)), int(next(itra)))
-                pixels[i, j]=color
+                pixels[j, i]=color
 
         while (True):
             print(next(itra))
